@@ -1,0 +1,135 @@
+{% extends "layout.html" %}
+
+{% block title %} Create Staff {% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+      <!-- Bread crumb and right sidebar toggle -->
+      <div class="page-breadcrumb bg-white">
+            <div class="row align-items-center">
+                  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <h3 class="page-title">Thêm nhân viên</h3>
+                  </div>
+            </div>
+      </div>
+
+      <div class="container-fluid">
+            <!-- Start Page Content -->
+            <div class="row">
+                  <div class="col-sm-12">
+                        <div class="white-box">
+                              <h3 class="box-title">Nhân viên</h3>
+                              <div class="table-responsive">
+                                    <form action="/staffs/insert" method="post" enctype="multipart/form-data">
+                                          <!-- Tên nhân viên -->
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px;margin-bottom : 4px"
+                                                                  class="fas fa-info-circle form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Tên nhân viên</h5>
+                                                      </div>
+                                                      <input type="text" name="TenNV" class="form-control has-feedback-left" placeholder="Tên nhân viên">
+                                                </div>
+                                          </div>
+
+                                          <!-- Giới tính -->
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px; margin-bottom : 4px"
+                                                                  class="fas fa-clipboard-list form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Giới tính</h5>
+                                                      </div>
+                                                      <!-- Tạo 2 radio button chọn Nam hay Nữ -->
+                                                      <div class="radio-buttons">
+                                                            <label class="radio-inline" style="margin-right: 20px;">
+                                                                <input type="radio" name="GioiTinh" value="Nam"> Nam
+                                                            </label>
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="GioiTinh" value="Nữ"> Nữ
+                                                            </label>
+                                                      </div>
+                                                </div>
+                                          </div>
+
+                                          <!-- Ngày sinh -->
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px; margin-bottom : 4px"
+                                                                  class="fas fa-clipboard-list form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Ngày sinh</h5>
+                                                      </div>
+                                                      <input name="NgaySinh" type="datetime-local" class="form-control has-feedback-left">
+
+                                                </div>
+                                          </div>
+
+                                          <!-- Địa chỉ -->
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px;margin-bottom : 4px"
+                                                                  class="fas fa-info-circle form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Địa chỉ</h5>
+                                                      </div>
+                                                      <input type="text" name="DiaChi" class="form-control has-feedback-left" placeholder="Địa chỉ">
+                                                </div>
+                                          </div>
+
+                                          <!-- Số điện thoại -->
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px;margin-bottom : 4px"
+                                                                  class="fas fa-info-circle form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Số điện thoại</h5>
+                                                      </div>
+                                                      <input type="text" name="SDT" class="form-control has-feedback-left" placeholder="Số ĐT">
+                                                </div>
+                                          </div>
+
+                                          <!-- Chức vụ -->
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px;margin-bottom : 4px"
+                                                                  class="fas fa-calendar-alt form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Chức vụ</h5>
+                                                      </div>
+                                                      <select name="ChucVu" class="form-control">
+                                                            {% for chuc_vu in list_chuc_vu %}
+                                                                  <option value="{{ chuc_vu }}">{{ chuc_vu }}</option>
+                                                            {% endfor %}
+                                                      </select>
+                                                </div>
+                                          </div>
+
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <a class="btn btn-primary" href="/staffs" type="button">Cancel</a>
+                                                      <button type="submit" value="Submit" class="btn btn-success">Submit</button>
+                                                </div>
+                                          </div>
+                                    </form>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+            <!-- End Page Content -->
+      </div>
+</div>
+{% endblock %}

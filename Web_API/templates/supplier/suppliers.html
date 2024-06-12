@@ -1,0 +1,181 @@
+{% extends "layout.html" %}
+
+{% block title %} Suppliers {% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+      <!-- Bread crumb and right sidebar toggle -->
+      <div class="page-breadcrumb bg-white">
+            <div class="row align-items-center">
+                  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <h3 class="page-title">Nhà cung cấp</h3>
+                  </div>
+                  <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                        <div class="d-md-flex">
+                              <ol class="breadcrumb ms-auto"></ol>
+                              <a href="/suppliers/createSupplier"
+                                    class="btn btn-success  d-none d-md-block pull-right ms-3 hidden-xs hidden-sm waves-effect waves-light text-white">
+                                    Thêm nhà cung cấp
+                              </a>
+                        </div>
+                  </div>
+            </div>
+      </div>
+      <!-- End Bread crumb and right sidebar toggle -->
+
+      <!-- ============================================================== -->
+
+      <!-- Container fluid  -->
+      <div class="container-fluid">
+            <!-- Start Page Content -->
+            <div class="row">
+                  <div class="col-sm-12">
+                        <div class="white-box">
+                              <h3 class="box-title">Nhà cung cấp</h3>
+                              <div class="table-responsive" style="height: 398px;">
+                                    <table class="table text-nowrap table-bordered table-hover">
+                                          <thead>
+                                                <tr class="table-primary">
+                                                      <th> Mã nhà cung cấp </th>
+                                                      <th> Tên nhà cung cấp </th>
+                                                      <th> Số ĐT </th>
+                                                      <th> Email </th>
+                                                      <th> Địa chỉ </th>
+                                                      <th></th>
+                                                </tr>
+                                          </thead>
+                                          <tbody id="supplierList">
+                                                <!-- Put data by Js  -->
+                                          </tbody>
+                                    </table>
+                              </div>
+                              <!-- Phân trang -->
+                              <div id="pagination" style="margin-top: 30px;"></div>
+                        </div>
+                  </div>
+            </div>
+            <!-- End Page Content -->
+      </div>
+      <!-- End Container fluid  -->
+</div>
+
+<script>
+      var currentPage = 1;
+      var itemsPerPage = 5;
+
+      // Hàm hiển thị dữ liệu cho một trang cụ thể
+      function displayData(pageNumber, data) {
+            var start = (pageNumber - 1) * itemsPerPage;
+            var end = start + itemsPerPage;
+            var paginatedData = data.slice(start, end);
+
+            var tableBody = document.getElementById("supplierList");
+            tableBody.innerHTML = ""; // Xóa bảng hiện tại trước khi thêm dữ liệu mới
+
+            paginatedData.forEach(function (supplier) {
+                  var row = document.createElement("tr");
+                  var keys = ['MaNCC','TenNCC','SDT','Email','DiaChi']
+                  for (var i = 0; i < keys.length; i++) {
+                        var cell = document.createElement("td");
+                        cell.textContent = supplier[keys[i]];
+                        row.appendChild(cell);
+                  }
+
+                  var actionCell = document.createElement("td");
+                  let supplierID = supplier.MaNCC;
+
+                  var editButton = document.createElement("button");
+                  editButton.textContent = "Edit";
+                  editButton.style.marginRight = "5px";
+                  editButton.setAttribute("class", "btn btn-primary");
+                  editButton.addEventListener("click", function () {
+                        window.location.href = "/suppliers/updateSupplier/" + supplierID;
+                  });
+                  actionCell.appendChild(editButton);
+
+                  var deleteButton = document.createElement("button");
+                  deleteButton.textContent = "Delete";
+                  deleteButton.setAttribute("class", "btn btn-danger");
+                  deleteButton.addEventListener("click", function () {
+                        window.location.href = "/suppliers/deleteSupplier/" + supplierID;
+                  });
+                  actionCell.appendChild(deleteButton);
+                  actionCell.style.textAlign = 'center';
+
+                  row.appendChild(actionCell);
+                  tableBody.appendChild(row);
+            });
+            // Highlight trang hiện tại
+            highlightCurrentPage(pageNumber);
+      }
+
+      // Hàm tạo liên kết phân trang
+      function createPaginationButtons(totalPages, suppliers) {
+            var pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";    // Xóa nút phân trang hiện tại trước khi tạo mới
+
+            for (var i = 1; i <= totalPages; i++) {
+                  var button = document.createElement("button");
+                  button.textContent = i;
+                  button.addEventListener("click", function () {
+                        currentPage = parseInt(this.textContent);
+                        displayData(currentPage, suppliers);
+                  });
+                  pagination.appendChild(button);
+            }
+            // Canh giữa thanh phân trang
+            pagination.style.textAlign = "center";
+      }
+
+      // Highlight trang hiện tại
+      function highlightCurrentPage(pageNumber) {
+            var buttons = document.getElementById("pagination").getElementsByTagName("button");
+            for (var i = 0; i < buttons.length; i++) {
+                  if (parseInt(buttons[i].textContent) === pageNumber) {
+                        buttons[i].style.backgroundColor = "#007bff";
+                        buttons[i].style.color = "#fff";
+                  } else {
+                        buttons[i].style.backgroundColor = "";
+                        buttons[i].style.color = "";
+                  }
+            }
+      }
+
+      // Sử dụng AJAX để gửi yêu cầu GET đến endpoint /supplier/getAll
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "/suppliers/getAll", true);      
+      xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                  var suppliers = JSON.parse(xhr.responseText);
+                  // Tạo nút phân trang và Hiển thị dữ liệu cho trang đầu tiên
+                  if (suppliers.length/itemsPerPage > 1)
+                        createPaginationButtons(Math.ceil(suppliers.length / itemsPerPage), suppliers);
+                  displayData(currentPage, suppliers);
+            }
+      };
+      xhr.send();
+
+      // Tìm kiếm tên nhà cung cấp
+      document.getElementById("searchIcon").addEventListener("click", function () {
+            event.preventDefault(); // Ngăn chặn hành vi mặc định của nút tìm kiếm
+            var searchTerm = document.getElementById("searchInput").value;
+            url = "/suppliers/getNccByTenNCC/" + searchTerm;
+            if (searchTerm.trim() == "") 
+                  url = "/suppliers/getAll";
+            
+            // Gửi yêu cầu tìm kiếm đến endpoint /medicine/getThuocByTenThuoc/<TenThuoc>
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.onreadystatechange = function () {
+                  if (xhr.readyState === 4 && xhr.status === 200) {
+                        var suppliers = JSON.parse(xhr.responseText);
+                        document.getElementById("pagination").innerHTML = "";       // Reser thanh phân trang
+                        if (suppliers.length / itemsPerPage > 1)
+                              createPaginationButtons(Math.ceil(suppliers.length / itemsPerPage), suppliers);
+                        displayData(currentPage, suppliers);
+                  }
+            };
+            xhr.send();
+      });
+</script>
+{% endblock %}

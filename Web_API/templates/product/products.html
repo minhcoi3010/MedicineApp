@@ -1,0 +1,230 @@
+{% extends "layout.html" %}
+
+{% block title %} Products {% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+      <!-- Bread crumb and right sidebar toggle -->
+      <div class="page-breadcrumb bg-white">
+            <div class="row align-items-center">
+                  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <h3 class="page-title">Trang Sản Phẩm</h3>
+                  </div>
+                  {% if role == 'Thủ kho' %}
+                  <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                        <div class="d-md-flex">
+                              <ol class="breadcrumb ms-auto"></ol>
+                              <a href="/products/createProducts"
+                                    class="btn btn-success  d-none d-md-block pull-right ms-3 hidden-xs hidden-sm waves-effect waves-light text-white">
+                                    Thêm Sản Phẩm
+                              </a>
+                        </div>
+                  </div>
+                  {% endif %}
+            </div>
+      </div>
+      <!-- End Bread crumb and right sidebar toggle -->
+
+      <!-- ============================================================== -->
+
+      <!-- Container fluid  -->
+      <div class="container-fluid">
+            <!-- Start Page Content -->
+            <div class="row">
+                  <div class="col-sm-12">
+                        <div class="white-box">
+                              <h3 class="box-title" style="float: left;">Sản Phẩm</h3>
+                              <!-- Tạo ô select để chọn các trường để sắp xếp danh thuốc theo (TenThuoc, DonGiaBan, SoLuong) -->
+                              <div style="float: right; font-size: 16px;">
+                                    <label for="sort">Sắp xếp theo: </label>
+                                    <select id="sort">
+                                          <option value="">...</option>
+                                          <option value="TenThuoc">Tên thuốc</option>
+                                          <option value="DonGiaBan">Đơn giá bán</option>
+                                          <option value="SoLuong">Số lượng</option>
+                                    </select>
+                                    <button id="sortButton">Sắp xếp</button>
+                              </div>
+                              <div class="table-responsive" style="height: 398px; clear: both;">
+                                    <table class="table text-nowrap table-bordered table-hover">
+                                          <thead>
+                                                <tr class="table-primary">
+                                                      <th> Mã thuốc </th>
+                                                      <th> Tên thuốc </th>
+                                                      <th> Thành phần </th>
+                                                      <th> Đơn giá bán </th>
+                                                      <th> Đơn giá nhập </th>
+                                                      <th> Số lượng </th>
+                                                      <th> Mã loại </th>
+                                                      <th></th>
+                                                </tr>
+                                          </thead>
+                                          <tbody id="medicineList">
+                                                <!-- Put data by Js  -->
+                                          </tbody>
+                                    </table>
+                              </div>
+                              <!-- Phân trang -->
+                              <div id="pagination" style="margin-top: 30px;"></div>
+                        </div>
+                  </div>
+            </div>
+            <!-- End Page Content -->
+      </div>
+      <!-- End Container fluid  -->
+</div>
+
+<script>
+      var currentPage = 1;
+      var itemsPerPage = 5;
+
+      // Hàm hiển thị dữ liệu cho một trang cụ thể
+      function displayData(pageNumber, data) {
+            var start = (pageNumber - 1) * itemsPerPage;
+            var end = start + itemsPerPage;
+            var paginatedData = data.slice(start, end);
+
+            var tableBody = document.getElementById("medicineList");
+            tableBody.innerHTML = ""; // Xóa bảng hiện tại trước khi thêm dữ liệu mới
+
+            paginatedData.forEach(function (medicine) {
+                  var row = document.createElement("tr");
+                  var keys = ['MaThuoc','TenThuoc','ThanhPhan','DonGiaBan','DonGiaNhap','SoLuong','MaLoai']
+                  for (var i = 0; i < keys.length; i++) {
+                        var cell = document.createElement("td");
+                        cell.textContent = medicine[keys[i]];
+                        row.appendChild(cell);
+                  }
+
+                  // Tạo các nút Detail, Edit và Delete
+                  var actionCell = document.createElement("td");
+
+                  var detailButton = document.createElement("a");
+                  detailButton.textContent = "Detail";
+                  var id =  medicine['MaThuoc']
+                  detailButton.setAttribute("href", "/products/detail/" + id);
+                  detailButton.setAttribute("class", "btn btn-success");
+                  detailButton.style.marginRight = "5px"
+                  actionCell.appendChild(detailButton);
+
+                  if ('{{role}}'=='Thủ kho')
+                  {
+                        // Edit
+                        var editButton = document.createElement("a");
+                        editButton.textContent = "Edit";
+                        var id =  medicine['MaThuoc']
+                        editButton.setAttribute("href", "/products/edit/" + id);
+                        editButton.setAttribute("class", "btn btn-primary");
+                        editButton.style.marginRight = "5px"
+                        actionCell.appendChild(editButton);
+
+                        // Delete
+                        var deleteButton = document.createElement("button");
+                        deleteButton.textContent = "Delete";
+                        deleteButton.setAttribute("class", "btn btn-danger");
+                        var id =  medicine['MaThuoc']
+                        deleteButton.addEventListener("click", function () {
+                              window.location.href = "/products/delete/" + id;
+                        });
+                        actionCell.appendChild(deleteButton);
+                  }
+                  row.appendChild(actionCell);
+                  tableBody.appendChild(row);
+            });
+            // Highlight trang hiện tại
+            highlightCurrentPage(pageNumber);
+      }
+
+      // Hàm tạo liên kết phân trang
+      function createPaginationButtons(totalPages, medicines) {
+            var pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";    // Xóa nút phân trang hiện tại trước khi tạo mới
+
+            for (var i = 1; i <= totalPages; i++) {
+                  var button = document.createElement("button");
+                  button.textContent = i;
+                  button.addEventListener("click", function () {
+                        currentPage = parseInt(this.textContent);
+                        displayData(currentPage, medicines);
+                  });
+                  pagination.appendChild(button);
+            }
+            // Canh giữa thanh phân trang
+            pagination.style.textAlign = "center";
+      }
+
+      // Highlight trang hiện tại
+      function highlightCurrentPage(pageNumber) {
+            var buttons = document.getElementById("pagination").getElementsByTagName("button");
+            for (var i = 0; i < buttons.length; i++) {
+                  if (parseInt(buttons[i].textContent) === pageNumber) {
+                        buttons[i].style.backgroundColor = "#007bff";
+                        buttons[i].style.color = "#fff";
+                  } else {
+                        buttons[i].style.backgroundColor = "";
+                        buttons[i].style.color = "";
+                  }
+            }
+      }
+
+      // Sử dụng AJAX để gửi yêu cầu GET đến endpoint /medicine/getAll
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "/medicine/getAll", true);      
+      xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                  var medicines = JSON.parse(xhr.responseText);
+                  // Tạo nút phân trang và Hiển thị dữ liệu cho trang đầu tiên
+                  if (medicines.length/itemsPerPage > 1)
+                        createPaginationButtons(Math.ceil(medicines.length / itemsPerPage), medicines);
+                  displayData(currentPage, medicines);
+            }
+      };
+      xhr.send();
+
+      // Tìm kiếm theo tên thuốc
+      document.getElementById("searchIcon").addEventListener("click", function () {
+            event.preventDefault();       // Ngăn chặn hành vi mặc định của nút tìm kiếm (Tải lại trang)
+            var searchTerm = document.getElementById("searchInput").value;
+            url = "/medicine/getThuocByTenThuoc/";
+            if (searchTerm.trim() == "") 
+                  url = "/medicine/getAll";
+            
+            // Gửi yêu cầu tìm kiếm đến endpoint /medicine/getThuocByTenThuoc/<TenThuoc>
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url + searchTerm, true);
+            xhr.onreadystatechange = function () {
+                  if (xhr.readyState === 4 && xhr.status === 200) {
+                        var medicines = JSON.parse(xhr.responseText);
+                        document.getElementById("pagination").innerHTML = "";       // Reser thanh phân trang
+                        if (medicines.length / itemsPerPage > 1)
+                              createPaginationButtons(Math.ceil(medicines.length / itemsPerPage), medicines);
+                        displayData(currentPage, medicines);
+                  }
+            };
+            xhr.send();
+      });
+
+      // Xử lý sự kiện khi người dùng nhấn nút "Sắp xếp" theo thuộc tính
+      document.getElementById("sortButton").addEventListener("click", function () {
+            event.preventDefault();       // Ngăn chặn trang tải lại
+            var sortBy = document.getElementById("sort").value;
+            //alert(sortBy);
+            url = "/medicine/getAllWithCondition?sortBy=" + sortBy;
+            if (sortBy.trim() == "") 
+                  url = "/medicine/getAll";
+            // Gửi yêu cầu sắp xếp danh sách thuốc theo thuộc tính đã chọn đến endpoint /medicine/getAllWithCondition
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.onreadystatechange = function () {
+                  if (xhr.readyState === 4 && xhr.status === 200) {
+                        var medicines = JSON.parse(xhr.responseText);
+                        document.getElementById("pagination").innerHTML = "";       // Đặt lại thanh phân trang
+                        if (medicines.length / itemsPerPage > 1)
+                              createPaginationButtons(Math.ceil(medicines.length / itemsPerPage), medicines);
+                        displayData(currentPage, medicines);
+                  }
+            };
+            xhr.send();
+      });
+</script>
+{% endblock %}

@@ -1,0 +1,73 @@
+﻿{% extends "layout.html" %}
+
+{% block title %} Delete Staff {% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="page-breadcrumb bg-white">
+        <div class="row align-items-center">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                <h3 class="page-title">Xóa nhân viên</h3>
+            </div>
+            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                <div class="d-md-flex">
+                    <ol class="breadcrumb ms-auto">
+                    </ol>
+                </div>
+            </div>
+            <h4>Are you sure you want to delete this?</h4>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+
+    <div class="container-fluid">
+        <!-- Start Page Content -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="white-box">
+                    <h4>Nhân viên</h4>
+                    <hr />
+                    <dl class="row" id="nhanvien">
+                        <!-- Dữ liệu từ API sẽ được thêm vào đây -->
+                        <dt> Mã nhân viên: </dt>
+                        <dd> {{ nhanvien.MaNV }} </dd>
+                        <dt> Tên nhân viên: </dt>
+                        <dd> {{ nhanvien['TenNV'] }} </dd>
+                        <dt> Giới tính: </dt>
+                        <dd> {{ nhanvien['GioiTinh'] }} </dd>
+                        <dt> Ngày sinh: </dt>
+                        <dd> {{ nhanvien['NgaySinh'] }} </dd>
+                        <dt> Địa chỉ: </dt>
+                        <dd> {{ nhanvien['DiaChi'] }} </dd>
+                        <dt> Số điện thoại: </dt>
+                        <dd> {{ nhanvien['SDT'] }} </dd>
+                        <dt> Chức vụ: </dt>
+                        <dd> {{ nhanvien.ChucVu }} </dd>
+                    </dl>
+                    <form action="/staffs/deletebyid/{{id}}" method="post">
+                        <input type="submit" value="Delete" class="btn btn-danger" /> |
+                        <a class=" btn btn-success" href="/staffs">Back to List</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* CSS để hiển thị dt và dd trên cùng một dòng */
+    /* Sử dụng Flexbox để hiển thị dt và dd trên cùng một dòng */
+    dl.row dt {
+        width: 15%;
+    }
+    dl.row dd {
+        width: 80%;
+    }
+
+    dl.row dt {
+        font-weight: bold;
+        margin-right: 5px;
+    }
+</style>
+{% endblock %}

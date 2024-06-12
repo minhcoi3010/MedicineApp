@@ -1,0 +1,154 @@
+{% extends "layout.html" %}
+
+{% block title %} Customers {% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+      <!-- Bread crumb and right sidebar toggle -->
+      <div class="page-breadcrumb bg-white">
+            <div class="row align-items-center">
+                  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <h3 class="page-title">Trang Khách Hàng</h3>
+                  </div>
+                  <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                        <div class="d-md-flex">
+                              <ol class="breadcrumb ms-auto"></ol>
+                        </div>
+                  </div>
+            </div>
+      </div>
+      <!-- End Bread crumb and right sidebar toggle -->
+
+      <!-- ============================================================== -->
+
+      <!-- Container fluid  -->
+      <div class="container-fluid">
+            <!-- Start Page Content -->
+            <div class="row">
+                  <div class="col-sm-12">
+                        <div class="white-box">
+                              <h3 class="box-title">Khách hàng</h3>
+                              <div class="table-responsive" style="height: 398px;">
+                                    <table class="table text-nowrap table-bordered table-hover">
+                                          <thead>
+                                                <tr class="table-primary">
+                                                      <th> Mã khách hàng </th>
+                                                      <th> Tên khách hàng </th>
+                                                      <th> Giới tính </th>
+                                                      <th> Ngày sinh </th>
+                                                      <th> Địa chỉ </th>
+                                                      <th> Số ĐT </th>
+                                                </tr>
+                                          </thead>
+                                          <tbody id="customerList">
+                                                <!-- Put data by Js  -->
+                                          </tbody>
+                                    </table>
+                              </div>
+                              <!-- Phân trang -->
+                              <div id="pagination" style="margin-top: 30px;"></div>
+                        </div>
+                  </div>
+            </div>
+            <!-- End Page Content -->
+      </div>
+      <!-- End Container fluid  -->
+</div>
+
+<script>
+      var currentPage = 1;
+      var itemsPerPage = 5;
+
+      // Hàm hiển thị dữ liệu cho một trang cụ thể
+      function displayData(pageNumber, data) {
+            var start = (pageNumber - 1) * itemsPerPage;
+            var end = start + itemsPerPage;
+            var paginatedData = data.slice(start, end);
+
+            var tableBody = document.getElementById("customerList");
+            tableBody.innerHTML = ""; // Xóa bảng hiện tại trước khi thêm dữ liệu mới
+
+            paginatedData.forEach(function (customer) {
+                  var row = document.createElement("tr");
+                  var keys = ['MaKH','TenKH','GioiTinh','NgaySinh','DiaChi','SDT']
+                  for (var i = 0; i < keys.length; i++) {
+                        var cell = document.createElement("td");
+                        cell.textContent = customer[keys[i]];
+                        row.appendChild(cell);
+                  }
+                  tableBody.appendChild(row);
+            });
+            // Highlight trang hiện tại
+            highlightCurrentPage(pageNumber);
+      }
+
+      // Hàm tạo liên kết phân trang
+      function createPaginationButtons(totalPages, customers) {
+            var pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";    // Xóa nút phân trang hiện tại trước khi tạo mới
+
+            for (var i = 1; i <= totalPages; i++) {
+                  var button = document.createElement("button");
+                  button.textContent = i;
+                  button.addEventListener("click", function () {
+                        currentPage = parseInt(this.textContent);
+                        displayData(currentPage, customers);
+                  });
+                  pagination.appendChild(button);
+            }
+            // Canh giữa thanh phân trang
+            pagination.style.textAlign = "center";
+      }
+
+      // Highlight trang hiện tại
+      function highlightCurrentPage(pageNumber) {
+            var buttons = document.getElementById("pagination").getElementsByTagName("button");
+            for (var i = 0; i < buttons.length; i++) {
+                  if (parseInt(buttons[i].textContent) === pageNumber) {
+                        buttons[i].style.backgroundColor = "#007bff";
+                        buttons[i].style.color = "#fff";
+                  } else {
+                        buttons[i].style.backgroundColor = "";
+                        buttons[i].style.color = "";
+                  }
+            }
+      }
+
+      // Sử dụng AJAX để gửi yêu cầu GET đến endpoint /customers/getAll
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "/customers/getAll", true);      
+      xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                  var customers = JSON.parse(xhr.responseText);
+                  // Tạo nút phân trang và Hiển thị dữ liệu cho trang đầu tiên
+                  if (customers.length/itemsPerPage > 1)
+                        createPaginationButtons(Math.ceil(customers.length / itemsPerPage), customers);
+                  displayData(currentPage, customers);
+            }
+      };
+      xhr.send();
+
+      // Tìm kiếm tên khách hàng
+      document.getElementById("searchIcon").addEventListener("click", function () {
+            event.preventDefault(); // Ngăn chặn hành vi mặc định của nút tìm kiếm
+            var searchTerm = document.getElementById("searchInput").value;
+            url = "/customers/getKhByTenKH/" + searchTerm;
+            if (searchTerm.trim() == "") 
+                  url = "/customers/getAll";
+            
+            // Gửi yêu cầu tìm kiếm đến endpoint /medicine/getThuocByTenThuoc/<TenThuoc>
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.onreadystatechange = function () {
+                  if (xhr.readyState === 4 && xhr.status === 200) {
+                        var customers = JSON.parse(xhr.responseText);
+                        document.getElementById("pagination").innerHTML = "";       // Reser thanh phân trang
+                        if (customers.length / itemsPerPage > 1)
+                              createPaginationButtons(Math.ceil(customers.length / itemsPerPage), customers);
+                        displayData(currentPage, customers);
+                  }
+            };
+            xhr.send();
+      });
+</script>
+{% endblock %}

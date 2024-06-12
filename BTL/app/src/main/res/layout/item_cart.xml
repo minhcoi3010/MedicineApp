@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    android:background="@drawable/item_border"
+    android:orientation="horizontal">
+
+
+    <ImageView
+        android:id="@+id/img_anh_item_cart"
+        android:background="@drawable/item_border"
+        android:layout_width="80dp"
+        android:layout_margin="10dp"
+        android:layout_height="90dp"
+        android:src="@drawable/products1"/>
+
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_name_item_cart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thuốc Imidu 60mg có thành phần chính là Isosorbid-5-mononitrat. Hoạt chất này có tác dụng làm giãn hệ động mạch, bao gồm cả mạch vành. Từ đó, giúp làm giảm tiêu thụ oxy của cơ tim, cắt cơn đau thắt ngực. Ngoài ra, Isosorbid-5-mononitrat còn làm giảm áp lực thất phải và tuần hoàn phổi trong suy tim.."
+            android:textSize="15dp"
+            android:lines="1"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:layout_marginTop="10dp"
+            android:textColor="#D8000000"/>
+
+        <TextView
+            android:id="@+id/tv_mota_item_cart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thuốc Imidu 60mg có thành phần chính là Isosorbid-5-mononitrat. Hoạt chất này có tác dụng làm giãn hệ động mạch, bao gồm cả mạch vành. Từ đó, giúp làm giảm tiêu thụ oxy của cơ tim, cắt cơn đau thắt ngực. Ngoài ra, Isosorbid-5-mononitrat còn làm giảm áp lực thất phải và tuần hoàn phổi trong suy tim.."
+            android:textSize="15dp"
+            android:lines="1"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:layout_marginTop="5dp"
+            android:textColor="#D8000000"/>
+
+        <TextView
+            android:id="@+id/tv_dongiaban_item_cart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:text="300000đ / hộp"
+            android:textStyle="bold"
+            android:textSize="17dp"
+            android:textColor="@color/lavender"/>
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:background="@drawable/item_border_gray"
+            >
+
+            <ImageView
+                android:id="@+id/img_minus_item_cart"
+                android:layout_marginTop="7dp"
+                android:layout_weight="1"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/minus"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/black"/>
+            <TextView
+                android:id="@+id/tv_soluong_item_cart"
+                android:layout_weight="1"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:textSize="20dp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:text="1"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/black"/>
+
+            <ImageView
+                android:id="@+id/img_plus_item_cart"
+                android:layout_weight="1"
+                android:layout_marginTop="7dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/plus"/>
+
+
+        </LinearLayout>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/img_delete_item_cart"
+        android:layout_width="30dp"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        android:layout_height="30dp"
+        android:src="@drawable/baseline_delete_24"/>
+
+</LinearLayout>

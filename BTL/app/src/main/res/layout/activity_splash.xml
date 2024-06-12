@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/anh2"
+    tools:context=".activity.SplashActivity">
+
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pharmacy"
+        android:gravity="center"
+        android:textColor="#536DFE"
+        android:textSize="60dp"
+        android:textStyle="bold"/>
+
+
+    <TextView
+        android:layout_marginTop="625dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Minh T.Anh Hiệp"
+        android:gravity="center"
+        android:textColor="#536DFE"
+        android:textSize="37dp"
+        android:textStyle="bold"/>
+
+
+</LinearLayout>

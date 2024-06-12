@@ -1,0 +1,93 @@
+﻿{% extends "layout.html" %}
+
+{% block title %} Detail Product {% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="page-breadcrumb bg-white">
+        <div class="row align-items-center">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                <h3 class="page-title">Chi tiết Sản Phẩm</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+
+    <div class="container-fluid">
+        <!-- Start Page Content -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="white-box">
+                    <div>
+                        <h4>Chi tiết thuốc</h4>
+                        <hr />
+                        <dl class="row" id="product-details-list">
+                            <!-- Dữ liệu từ API sẽ được thêm vào đây -->
+                        </dl>
+                    </div>
+                    <div>
+                        <a href="/products" class="btn btn-primary">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Fetch product details from API
+    const productId = '{{ id }}';
+    fetch(`/products/getbyid/${productId}`)
+        .then(response => response.json())
+        .then(data => {
+            // Process data and update HTML content
+            const productDetailsList = document.getElementById('product-details-list');
+            var keys = ['MaThuoc','TenThuoc','ThanhPhan','NgaySX','NgayHH','MaLoai','DonGiaBan','DonGiaNhap','SoLuong','TrongLuong','Anh','XuatXu','MoTa']
+
+            // Tạo mảng mới sắp xếp theo thứ tự keys
+            const sortedData = keys.map(key => [key, data[key]]);
+
+            // Lặp qua mảng mới để tạo phần tử HTML và thêm chúng vào trang
+            sortedData.forEach(([key, value]) => {
+                const dt = document.createElement('dt');
+                dt.textContent = key + ":";
+                const dd = document.createElement('dd');
+
+                // Nếu key là 'Anh' và có dữ liệu
+                if (key === 'Anh' && value) {
+                    var imageBaseUrl = "{{ url_for('static', filename='images/') }}"; // Đường dẫn đến thư mục chứa ảnh
+                    const img = document.createElement('img');
+                    img.src = imageBaseUrl + value;
+                    img.alt = 'Product Image'; // Thêm mô tả hình ảnh tùy ý
+                    img.style.width = '100px'; // Đặt chiều rộng ảnh là 100px
+                    img.style.height = 'auto'; // Đảm bảo tỉ lệ hình ảnh không bị méo
+                    img.style.border = '1px solid #000'; // Thêm border đen 1px cho hình ảnh
+                    dd.appendChild(img); // Thêm hình ảnh vào phần tử dd
+                } else {
+                    dd.textContent = value;
+                }
+
+                productDetailsList.appendChild(dt);
+                productDetailsList.appendChild(dd);
+            })
+        })
+        .catch(error => console.error('Error fetching product details:', error));
+</script>
+
+<style>
+    /* CSS để hiển thị dt và dd trên cùng một dòng */
+    /* Sử dụng Flexbox để hiển thị dt và dd trên cùng một dòng */
+    dl.row dt {
+        width: 15%;
+    }
+    dl.row dd {
+        width: 80%;
+    }
+
+    dl.row dt {
+        font-weight: bold;
+        margin-right: 5px;
+    }
+</style>
+{% endblock %}

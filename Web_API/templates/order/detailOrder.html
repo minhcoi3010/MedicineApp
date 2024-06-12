@@ -1,0 +1,183 @@
+{% extends "layout.html" %}
+
+{% block title %} Detail Order {% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+      <!-- Bread crumb and right sidebar toggle -->
+      <div class="page-breadcrumb bg-white">
+            <div class="row align-items-center">
+                  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <h3 class="page-title">Chi tiết đơn hàng</h3>
+                  </div>
+            </div>
+      </div>
+      <!-- End Bread crumb and right sidebar toggle -->
+
+      <!-- ============================================================== -->
+
+      <!-- Container fluid  -->
+      <div class="container-fluid">
+            <!-- Start Page Content -->
+            <div class="row">
+                  <div class="col-sm-12">
+                        <div class="white-box">
+                              <div>
+                                    <dl class="row">
+                                          <dt> Số hóa đơn bán: </dt>
+                                          <dd> {{infoOrder.SoHDB}} </dd>
+                                          <dt> Ngày lập: </dt>
+                                          <dd> {{infoOrder.NgayLap}} </dd>
+                                          <dt> Mã khách hàng: </dt>
+                                          <dd> {{infoOrder.MaKH}} </dd>
+                                          <dt> Tổng tiền: </dt>
+                                          <dd> {{infoOrder.TongTien}} </dd>
+                                    </dl>  
+                              </div>
+                              <div class="table-responsive" style="height: 398px;">
+                                    <table class="table text-nowrap table-bordered table-hover">
+                                          <thead>
+                                                <tr class="table-primary">
+                                                      <th> Số hóa đơn bán </th>
+                                                      <th> Mã thuốc </th>
+                                                      <th> Số lượng bán </th>
+                                                      <th> Khuyến mãi </th>
+                                                      <th> Thành tiền </th>
+                                                </tr>
+                                          </thead>
+                                          <tbody id="orderList">
+                                                <!-- Put data by Js  -->
+                                          </tbody>
+                                    </table>
+                              </div>
+                              <!-- Phân trang -->
+                              <div style="text-align: center;  margin-top: 30px;">
+                                    <a class="btn btn-primary" href="/orders" style="float: left; margin-right: 10px;">Back</a>
+
+                                    <!-- Ấn để nhân viên xác nhận đơn hàng -->
+                                    <a class="btn btn-success" id="acceptOrder" style="float: left;">Accept</a>
+                                    <div id="pagination" style="display: inline-block;"></div>
+                              </div>
+                                
+                                
+                        </div>
+                  </div>
+            </div>
+            <!-- End Page Content -->
+      </div>
+      <!-- End Container fluid  -->
+</div>
+
+<script>
+      const orderId = '{{ id }}';
+      var currentPage = 1;
+      var itemsPerPage = 5;
+
+      // Hàm hiển thị dữ liệu cho một trang cụ thể
+      function displayData(pageNumber, data) {
+            var start = (pageNumber - 1) * itemsPerPage;
+            var end = start + itemsPerPage;
+            var paginatedData = data.slice(start, end);
+
+            var tableBody = document.getElementById("orderList");
+            tableBody.innerHTML = ""; // Xóa bảng hiện tại trước khi thêm dữ liệu mới
+
+            paginatedData.forEach(function (detailorder) {
+                  var row = document.createElement("tr");
+                  var keys = ['SoHDB','MaThuoc','SLBan','KhuyenMai','ThanhTien']
+                  for (var i = 0; i < keys.length; i++) {
+                        var cell = document.createElement("td");
+                        cell.textContent = detailorder[keys[i]];
+                        row.appendChild(cell);
+                  }
+                  tableBody.appendChild(row);
+            });
+            // Highlight trang hiện tại
+            highlightCurrentPage(pageNumber);
+      }
+
+      // Hàm tạo liên kết phân trang
+      function createPaginationButtons(totalPages, detailorders) {
+            var pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";    // Xóa nút phân trang hiện tại trước khi tạo mới
+
+            for (var i = 1; i <= totalPages; i++) {
+                  var button = document.createElement("button");
+                  button.textContent = i;
+                  button.addEventListener("click", function () {
+                        currentPage = parseInt(this.textContent);
+                        displayData(currentPage, detailorders);
+                  });
+                  pagination.appendChild(button);
+            }
+            // Canh giữa thanh phân trang
+            pagination.style.textAlign = "center";
+      }
+
+      // Highlight trang hiện tại
+      function highlightCurrentPage(pageNumber) {
+            var buttons = document.getElementById("pagination").getElementsByTagName("button");
+            for (var i = 0; i < buttons.length; i++) {
+                  if (parseInt(buttons[i].textContent) === pageNumber) {
+                        buttons[i].style.backgroundColor = "#007bff";
+                        buttons[i].style.color = "#fff";
+                  } else {
+                        buttons[i].style.backgroundColor = "";
+                        buttons[i].style.color = "";
+                  }
+            }
+      }
+
+      // Gửi yêu cầu GET đến endpoint /orders/getDetailbyID để lấy dữ liệu
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "/orders/getDetailbyID/" + orderId, true);      
+      xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                  var detailorders = JSON.parse(xhr.responseText);
+                  // Tạo nút phân trang và Hiển thị dữ liệu cho trang đầu tiên
+                  if (detailorders.length/itemsPerPage > 1)
+                        createPaginationButtons(Math.ceil(detailorders.length / itemsPerPage), detailorders);
+                  displayData(currentPage, detailorders);
+            }
+      };
+      xhr.send();
+
+      // Sự kiện khi nút Accept được nhấn
+      var buttonAcceptOrder = document.getElementById('acceptOrder');
+      buttonAcceptOrder.addEventListener('click', (e) => {
+            e.preventDefault();
+            var url = '/orders/updateOrder/{{id}}';
+            var data = {
+                  MaNV: '{{ten}}'
+            }
+            fetch(url, {
+                  method: 'PUT',
+                  headers: {
+                        'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                  const msg = data.msg;
+                  alert(msg);
+                  window.location.href = '/orders'
+            })
+            .catch(error => console.error(error));
+      })
+</script>
+
+<style>
+      /* CSS để hiển thị dt và dd trên cùng một dòng */
+      dl.row dt {
+          width: 12%;
+      }
+      dl.row dd {
+          width: 33%;
+      }
+      
+      table.table-bordered {
+            border-color: rgba(120,130,140,0.4);
+      }
+  </style>
+{% endblock %}

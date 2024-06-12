@@ -1,0 +1,164 @@
+{% extends "layout.html" %}
+
+{% block title %} Create Supplier {% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+      <!-- Bread crumb and right sidebar toggle -->
+      <div class="page-breadcrumb bg-white">
+            <div class="row align-items-center">
+                  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <h4 class="page-title">Thêm nhà cung cấp</h4>
+                  </div>
+                  <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                        <div class="d-md-flex">
+                              <ol class="breadcrumb ms-auto">
+                              </ol>
+                        </div>
+                  </div>
+            </div>
+      </div>
+
+      <div class="container-fluid">
+            <!-- Start Page Content -->
+            <div class="row">
+                  <div class="col-sm-12">
+                        <div class="white-box">
+                              <h3 class="box-title">Nhà cung cấp</h3>
+                              <div class="table-responsive">
+                                    <form 
+                                          enctype="multipart/form-data"
+                                          id="formCreateSupplier">
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px; margin-bottom : 4px"
+                                                                  class="fas fa-seedling form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Mã nhà cung cấp</h5>
+                                                      </div>
+                                                      <input type="text"
+                                                            id="MaNCC"
+                                                            class="form-control has-feedback-left"
+                                                            value="{{maNCC}}"
+                                                            readonly>
+                                                </div>
+
+                                          </div>
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px;margin-bottom : 4px"
+                                                                  class="fas fa-info-circle form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Tên nhà cung cấp</h5>
+                                                      </div>
+                                                      <input type="text"
+                                                            id="TenNCC"
+                                                            class="form-control has-feedback-left"
+                                                            placeholder="Tên nhà cung cấp">
+                                                </div>
+                                          </div>
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px; margin-bottom : 4px"
+                                                                  class="fas fa-clipboard-list form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Số điện thoại</h5>
+                                                      </div>
+                                                      <input type="text"
+                                                            id="SDT"
+                                                            class="form-control has-feedback-left"
+                                                            placeholder="Số điện thoại">
+                                                </div>
+                                          </div>
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px; margin-bottom : 4px"
+                                                                  class="fas fa-clipboard-list form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Email</h5>
+                                                      </div>
+                                                      <input class="form-control has-feedback-left"
+                                                            id="Email"
+                                                            placeholder="Email">
+                                                </div>
+                                          </div>
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px; margin-bottom : 4px"
+                                                                  class="fas fa-clipboard-list form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Địa chỉ</h5>
+                                                      </div>
+                                                      <input class="form-control has-feedback-left"
+                                                            id="DiaChi"
+                                                            placeholder="Địa chỉ">
+                                                </div>
+                                          </div>
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <a class="btn btn-primary" href="/suppliers"
+                                                            type="button">Cancel</a>
+                                                      <button type="submit" class="btn btn-success">Submit</button>
+                                                </div>
+                                          </div>
+                                    </form>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+            <!-- End Page Content -->
+      </div>
+</div>
+<script>
+      var formCreateSupplier = document.getElementById('formCreateSupplier');
+      var MaNCC_Input = document.getElementById('MaNCC');
+      var TenNCC_Input = document.getElementById('TenNCC');
+      var SDT_Input = document.getElementById('SDT');
+      var Email_Input = document.getElementById('Email');
+      var DiaChi_Input = document.getElementById('DiaChi');
+
+      formCreateSupplier.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+             // Kiểm tra các trường dữ liệu
+            if (TenNCC_Input.value === "" || SDT_Input.value === "" || Email_Input.value === "" || DiaChi_Input.value === "") {
+                  alert("Vui lòng nhập đủ thông tin");
+                  return; // Dừng xử lý nếu có trường dữ liệu không được nhập
+            }
+
+            var url = '/suppliers/postSupplier';
+            var data = {
+                  MaNCC: MaNCC_Input.value,
+                  TenNCC: TenNCC_Input.value,
+                  SDT: SDT_Input.value,
+                  Email: Email_Input.value,
+                  DiaChi: DiaChi_Input.value,
+            }
+            
+            fetch(url,{
+                  method: 'POST',
+                  headers: {
+                        'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                  const msg = data.msg;
+                  alert(msg);
+                  window.location.href = '/suppliers'
+            })
+            .catch(error => console.error(error));
+      })
+</script>
+{% endblock %}

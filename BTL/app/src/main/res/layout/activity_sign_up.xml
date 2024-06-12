@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/anh2"
+    android:orientation="vertical"
+    tools:context=".activity.SignUpActivity">
+
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Welcome"
+            android:textSize="60dp"
+            android:textStyle="bold"
+            android:textColor="#536DFE"/>
+        <TextView
+            android:layout_marginStart="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign Up!"
+            android:textSize="50dp"
+            android:textStyle="bold"
+            android:textColor="#536DFE"/>
+
+
+        <ScrollView
+            android:layout_marginTop="120dp"
+            android:layout_width="match_parent"
+            android:layout_height="350dp">
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <EditText
+                        android:id="@+id/edt_account_signup"
+                        android:layout_width="350dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/lavender_border"
+                        android:layout_marginTop="15dp"
+                        android:layout_gravity="center"
+                        android:padding="10dp"
+                        android:hint="Account"
+                        android:drawableLeft="@drawable/baseline_account_circle_24"
+                        android:drawablePadding="8dp"/>
+                    <EditText
+                        android:id="@+id/edt_password_signup"
+                        android:layout_width="350dp"
+                        android:layout_height="50dp"
+
+                        android:background="@drawable/lavender_border"
+                        android:layout_marginTop="15dp"
+                        android:layout_gravity="center"
+                        android:padding="10dp"
+                        android:hint="Password"
+                        android:drawableLeft="@drawable/baseline_password_24"
+                        android:drawablePadding="8dp"/>
+                    <EditText
+                        android:id="@+id/edt_name_signup"
+                        android:layout_width="350dp"
+                        android:layout_height="50dp"
+
+                        android:background="@drawable/lavender_border"
+                        android:layout_marginTop="15dp"
+                        android:layout_gravity="center"
+                        android:padding="10dp"
+                        android:hint="Name"
+                        android:drawableLeft="@drawable/baseline_drive_file_rename_outline_24"
+                        android:drawablePadding="8dp"/>
+                   <LinearLayout
+
+                       android:layout_width="350dp"
+                       android:layout_height="50dp"
+                       android:layout_marginStart="30dp"
+                       android:layout_marginTop="15dp">
+                       <TextView
+                           android:layout_marginEnd="10dp"
+                           android:layout_width="130dp"
+                           android:layout_height="50dp"
+                           android:text="Gender"
+                           android:textSize="19dp"
+                           android:background="@drawable/item_border"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:hint="Password"
+                           android:drawableLeft="@drawable/baseline_all_inclusive_24"
+                           android:drawablePadding="8dp"/>
+                       <RadioGroup
+                           android:id="@+id/edt_gender_signup"
+                           android:layout_width="210dp"
+                           android:layout_height="50dp"
+                           android:background="@drawable/lavender_border"
+
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:hint="Gender"
+                           android:orientation="horizontal"
+                           android:drawableLeft="@drawable/baseline_all_inclusive_24"
+                           android:drawablePadding="8dp">
+                           <RadioButton
+                               android:id="@+id/rbt_gender_male"
+                               android:layout_weight="1"
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content"
+                               android:text="Nam"/>
+                           <RadioButton
+                               android:id="@+id/rbt_gender_female"
+                               android:layout_weight="1"
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content"
+                               android:text="Nữ"/>
+                       </RadioGroup>
+                   </LinearLayout>
+                    <EditText
+                        android:id="@+id/edt_dateofbirth_signup"
+                        android:layout_width="350dp"
+                        android:layout_height="50dp"
+                        android:editable="false"
+                        android:background="@drawable/lavender_border"
+                        android:layout_marginTop="15dp"
+                        android:layout_gravity="center"
+                        android:padding="10dp"
+                        android:hint="Date Of Birth"
+                        android:drawableLeft="@drawable/baseline_date_range_24"
+                        android:drawablePadding="8dp"/>
+                    <EditText
+                        android:id="@+id/edt_address_signup"
+                        android:layout_width="350dp"
+                        android:layout_height="50dp"
+
+                        android:background="@drawable/lavender_border"
+                        android:layout_marginTop="15dp"
+                        android:layout_gravity="center"
+                        android:padding="10dp"
+                        android:hint="Address"
+                        android:drawableLeft="@drawable/baseline_location_on_24"
+                        android:drawablePadding="8dp"/>
+                    <EditText
+                        android:id="@+id/edt_phonenumber_signup"
+                        android:layout_width="350dp"
+                        android:layout_height="50dp"
+
+                        android:background="@drawable/lavender_border"
+                        android:layout_marginTop="15dp"
+                        android:layout_gravity="center"
+                        android:padding="10dp"
+                        android:hint="Phone Number"
+                        android:drawableLeft="@drawable/baseline_phone_android_24"
+                        android:drawablePadding="8dp"/>
+
+                </LinearLayout>
+            </ScrollView>
+            <Button
+
+                android:layout_width="350dp"
+                android:layout_height="70dp"
+                android:text="Sign Up"
+                android:background="@drawable/lavender_border"
+                android:id="@+id/signup_button"
+                android:backgroundTint="@color/lavender"
+                android:textSize="20sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                app:cornerRadius = "30dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/loginRedirectText"
+                android:text="Already an user? Login"
+                android:layout_gravity="center"
+                android:padding="8dp"
+                android:textSize="18sp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"/>
+
+
+
+
+</LinearLayout>

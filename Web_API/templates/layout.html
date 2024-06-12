@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0"> -->
+
+    <title> {% block title %} {% endblock %}</title>
+
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='plugins/images/favicon.png') }}">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bower_components/chartist/dist/chartist.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
+</head>
+
+<!-- ============================================================== -->
+
+<body>
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div> -->
+
+    <!-- ============================================================== -->
+
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
+        data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+
+        <!-- Topbar header - style you can find in pages.scss -->
+        <header class="topbar" data-navbarbg="skin5">
+            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+                <div class="navbar-header" data-logobg="skin6">
+                    <!-- Logo -->
+                    <a class="navbar-brand" href="/dashboard">
+                        <!-- Logo icon -->
+                        <b class="logo-icon">
+                            <img src="{{ url_for('static', filename='images/logo_icon.png') }}" style="width: 100%;" alt="homepage" />
+                        </b>
+                    </a>
+                    <!-- End Logo -->
+
+                    <!-- Toggle and nav items -->
+                    <a class="nav-toggler waves-effect waves-light text-dark d-block d-md-none"
+                        href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+                </div>
+                <!-- End Logo -->
+
+                <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+                    <!-- Right side toggle and nav items -->
+                    <ul class="navbar-nav ms-auto d-flex align-items-center">
+                        <!-- Search -->
+                        <li class=" in">
+                            <form role="search" class="app-search d-none d-md-block me-3">
+                                <input type="text" placeholder="Search..." class="form-control mt-0" id="searchInput">
+                                <a href="" class="active">
+                                    <i class="fa fa-search" id="searchIcon"></i>
+                                </a>
+                            </form>
+                        </li>
+                        <!-- User profile-->
+                        <li>
+                            <a class="profile-pic" href="/staffs/edit/{{ten}}">
+                                <img src="{{ url_for('static', filename='plugins/images/users/varun.jpg') }}" alt="user-img" width="36"
+                                    class="img-circle"><span class="text-white font-medium">{{ten}}</span>
+                            </a>
+                        </li>
+                        <!-- Logout Button -->
+                        <a class="btn btn-success sidebar-item" style="margin-right:10px" href="/logout">Logout</a>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <!-- ============================================================== -->
+
+        <!-- Left Sidebar - style you can find in sidebar.scss -->
+        <aside class="left-sidebar" data-sidebarbg="skin6">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <!-- Trang Chủ-->
+                        <li class="sidebar-item pt-2">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false" href="/dashboard">
+                                <i class="far fa-clock" aria-hidden="true"></i>
+                                <span class="hide-menu">Trang Chủ</span>
+                            </a>
+                        </li>
+                        <!-- Hiển thị các mục của Quản lý -->
+                        {% if role == 'Quản lý' %}
+                            <!-- Khách Hàng-->
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false" href="/customers">
+                                    <i class="fas fa-user" aria-hidden="true"></i>
+                                    <span class="hide-menu">Khách Hàng</span>
+                                </a>
+                            </li>
+                            <!-- Hóa Đơn Bán -->
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false" href="/bills">
+                                    <i class="fa fa-clipboard" aria-hidden="true"></i>
+                                    <span class="hide-menu">Hóa Đơn Bán</span>
+                                </a>
+                            </li>
+                            <!-- Nhân Viên -->
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false" href="/staffs">
+                                    <i class="fas fa-address-card" aria-hidden="true"></i>
+                                    <span class="hide-menu">Nhân Viên</span>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        <!-- Hiển thị các mục của Bán hàng -->
+                        {% if role == 'Bán hàng' %}
+                            <!-- Sản Phẩm-->
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false" href="/products">
+                                    <i class="fas fa-boxes" aria-hidden="true"></i>
+                                    <span class="hide-menu">Sản Phẩm</span>
+                                </a>
+                            </li>
+                            <!-- Đơn hàng hôm nay-->
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false" href="/orders">
+                                    <i class="fa fa-clipboard" aria-hidden="true"></i>
+                                    <span class="hide-menu">Đơn hàng</span>
+                                </a>
+                            </li>
+                            <!-- Hóa Đơn Bán-->
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false" href="/bills">
+                                    <i class="fa fa-clipboard" aria-hidden="true"></i>
+                                    <span class="hide-menu">Hóa Đơn Bán</span>
+                                </a>
+                            </li>
+                            <!-- Khách Hàng-->
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false" href="/customers">
+                                    <i class="fas fa-user" aria-hidden="true"></i>
+                                    <span class="hide-menu">Khách Hàng</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        
+                        <!-- Hiển thị các mục của Thủ kho -->
+                        {% if role == 'Thủ kho' %}
+                            <!-- Sản Phẩm-->
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false" href="/products">
+                                    <i class="fas fa-boxes" aria-hidden="true"></i>
+                                    <span class="hide-menu">Sản Phẩm</span>
+                                </a>
+                            </li>
+                            <!-- Hóa Đơn Nhập-->
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false" href="/invoices">
+                                    <i class="fas fa-dolly-flatbed" aria-hidden="true"></i>
+                                    <span class="hide-menu">Hóa Đơn Nhập</span>
+                                </a>
+                            </li>
+                            <!-- Nhà Cung Cấp-->
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false" href="/suppliers">
+                                    <i class="fas fa-truck" aria-hidden="true"></i>
+                                    <span class="hide-menu">Nhà Cung Cấp</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+
+        <!-- ============================================================== -->
+
+        <!-- Main Page -->
+        <div id="right-mainpage">
+            <!-- Main Body -->
+            {% block content %} {% endblock %}
+            <!-- Footer -->
+            <footer class="footer text-center">
+                © This website is made by group 10 in UTC 4 - 2024</a>
+            </footer>
+        </div>
+    </div>
+    <!-- End Wrapper -->
+
+    <!-- ============================================================== -->
+
+    <!-- All Jquery -->
+    <script src="{{ url_for('static', filename='plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app-style-switcher.js') }}"></script>
+    <script src="{{ url_for('static', filename='plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/waves.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebarmenu.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+    <script src="{{ url_for('static', filename='plugins/bower_components/chartist/dist/chartist.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/pages/dashboards/dashboard1.js') }}"></script>
+</body>
+
+</html>

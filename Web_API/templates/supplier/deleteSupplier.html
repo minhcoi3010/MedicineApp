@@ -1,0 +1,154 @@
+{% extends "layout.html" %}
+
+{% block title %} Delete Supplier {% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+      <!-- Bread crumb and right sidebar toggle -->
+      <div class="page-breadcrumb bg-white">
+            <div class="row align-items-center">
+                  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <h3 class="page-title">Xóa nhà cung cấp</h3>
+                  </div>
+            </div>
+      </div>
+
+      <div class="container-fluid">
+            <!-- Start Page Content -->
+            <div class="row">
+                  <div class="col-sm-12">
+                        <div class="white-box">
+                              <h4 class="box-title">Nhà cung cấp</h4>
+                              <div class="table-responsive">
+                                    <form 
+                                          enctype="multipart/form-data"
+                                          id="formDeleteSupplier">
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px; margin-bottom : 4px"
+                                                                  class="fas fa-seedling form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Mã nhà cung cấp</h5>
+                                                      </div>
+                                                      <input type="text"
+                                                            id="MaNCC"
+                                                            class="form-control has-feedback-left"
+                                                            readonly>
+                                                </div>
+
+                                          </div>
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px;margin-bottom : 4px"
+                                                                  class="fas fa-info-circle form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Tên nhà cung cấp</h5>
+                                                      </div>
+                                                      <input type="text"
+                                                            id="TenNCC"
+                                                            class="form-control has-feedback-left"
+                                                            readonly>
+                                                </div>
+                                          </div>
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px; margin-bottom : 4px"
+                                                                  class="fas fa-clipboard-list form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Số điện thoại</h5>
+                                                      </div>
+                                                      <input type="text"
+                                                            id="SDT"
+                                                            class="form-control has-feedback-left"
+                                                            readonly>
+                                                </div>
+                                          </div>
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px; margin-bottom : 4px"
+                                                                  class="fas fa-clipboard-list form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Email</h5>
+                                                      </div>
+                                                      <input class="form-control has-feedback-left"
+                                                            id="Email"
+                                                            readonly>
+                                                </div>
+                                          </div>
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px; margin-bottom : 4px"
+                                                                  class="fas fa-clipboard-list form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Địa chỉ</h5>
+                                                      </div>
+                                                      <input class="form-control has-feedback-left"
+                                                            id="DiaChi"
+                                                            readonly>
+                                                </div>
+                                          </div>
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <a class="btn btn-primary" href="/suppliers"
+                                                            type="button">Cancel</a>
+                                                      <button type="submit" class="btn btn-danger">Delete</button>
+                                                </div>
+                                          </div>
+                                    </form>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+            <!-- End Page Content -->
+      </div>
+</div>
+<script>
+      var formDeleteSupplier = document.getElementById('formDeleteSupplier');
+      var MaNCC_Input = document.getElementById('MaNCC');
+      var TenNCC_Input = document.getElementById('TenNCC');
+      var SDT_Input = document.getElementById('SDT');
+      var Email_Input = document.getElementById('Email');
+      var DiaChi_Input = document.getElementById('DiaChi');
+
+      fetch('/suppliers/getByID/{{ id }}')
+            .then(response => response.json())
+            .then(data => {
+                  MaNCC_Input.value = data['MaNCC'];
+                  TenNCC_Input.value = data['TenNCC'];
+                  SDT_Input.value = data['SDT'];
+                  Email_Input.value = data['Email'];
+                  DiaChi_Input.value = data['DiaChi'];
+            });
+
+      formDeleteSupplier.addEventListener('submit', (e) => {
+            e.preventDefault();
+            var url = '/suppliers/removeSupplier/{{id}}';
+            var data = {
+            }
+            fetch(url,{
+                  method: 'DELETE',
+                  headers: {
+                        'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                  const msg = data.msg;
+                  alert(msg);
+                  window.location.href = '/suppliers'
+            })
+            .catch(error => console.error(error));
+      })
+</script>
+{% endblock %}

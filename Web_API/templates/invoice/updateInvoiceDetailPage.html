@@ -1,0 +1,148 @@
+{% extends "layout.html" %}
+
+{% block title %} Update Detail Invoice {% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+      <!-- Bread crumb and right sidebar toggle -->
+      <div class="page-breadcrumb bg-white">
+            <div class="row align-items-center">
+                  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <h3 class="page-title">Chi Tiết Hóa Đơn Nhập</h3>
+                  </div>
+            </div>
+      </div>
+
+      <div class="container-fluid">
+            <!-- Start Page Content -->
+            <div class="row">
+                  <div class="col-sm-12">
+                        <div class="white-box">
+                              <h4 class="box-title">Sửa Chi Tiết Hóa Đơn {{idInvoice}}</h4>
+                              <div class="table-responsive">
+                                    <form enctype="multipart/form-data" id="formUpdateInvoiceDetail">
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px; margin-bottom : 4px"
+                                                                  class="fas fa-seedling form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Mã
+                                                                  thuốc</h5>
+                                                      </div>
+                                                      <input type="text" id="MaThuoc"
+                                                            class="form-control has-feedback-left"
+                                                            placeholder="Mã thuốc" readonly>
+                                                </div>
+
+                                          </div>
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px;margin-bottom : 4px"
+                                                                  class="fas fa-info-circle form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Số
+                                                                  lượng nhập</h5>
+                                                      </div>
+                                                      <input type="text" id="SLNhap"
+                                                            class="form-control has-feedback-left"
+                                                            placeholder="Số lượng nhập">
+                                                </div>
+                                          </div>
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class=" form-control-feedback left mb-2"
+                                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                                            <span style="margin-right: 5px; margin-bottom : 4px"
+                                                                  class="fas fa-clipboard-list form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Thành
+                                                                  tiền</h5>
+                                                      </div>
+                                                      <input type="text" id="ThanhTien"
+                                                            class="form-control has-feedback-left"
+                                                            placeholder="Thành tiền">
+                                                </div>
+                                          </div>
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <a class="btn btn-primary" href="/invoice/{{idInvoice}}"
+                                                            type="button">Cancel</a>
+                                                      <button type="submit" class="btn btn-success">Submit</button>
+                                                </div>
+                                          </div>
+                                    </form>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+            <!-- End Page Content -->
+      </div>
+</div>
+
+<script>
+      var formUpdateInvoiceDetail = document.getElementById('formUpdateInvoiceDetail');
+      var MaThuoc_Input = document.getElementById('MaThuoc');
+      var SLNhap_Input = document.getElementById('SLNhap');
+      var ThanhTien_Input = document.getElementById('ThanhTien');
+
+      fetch('/invoices/getInvoiceDetail/{{ idInvoice }}/{{ idProduct }}')
+            .then(response => response.json())
+            .then(data => {
+                  MaThuoc_Input.value = data['MaThuoc'];
+                  SLNhap_Input.value = data['SLNhap'];
+                  ThanhTien_Input.value = data['ThanhTien'];
+            })
+            .catch(error => console.error(error));
+
+      // Tự động cập nhật thành tiền khi nhập số lượng
+      SLNhap_Input.addEventListener("input", function(){
+            var maThuoc = MaThuoc_Input.value;
+            var soLuong = parseFloat(SLNhap_Input.value);
+            if (maThuoc && !isNaN(soLuong) && soLuong >= 0) {
+                  fetch("/products/getbyid/" + maThuoc)
+                        .then((response) => response.json())
+                        .then((data) => {
+                              var donGia = parseFloat(data.DonGiaNhap);
+                              if (!isNaN(donGia) && donGia >= 0) {
+                                    var thanhTien = donGia * soLuong;
+                                    ThanhTien_Input.value = thanhTien; // Set total value
+                              } else {
+                                    ThanhTien_Input.value = "";
+                              }
+                        })
+                        .catch((error) => console.error(error));
+            } else {
+                  ThanhTien_Input.value = ""; // Clear total value if quantity is not valid
+            }
+      });
+
+      formUpdateInvoiceDetail.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            var data = {
+                  SLNhap: SLNhap_Input.value,
+                  ThanhTien: ThanhTien_Input.value,
+            }
+
+            fetch('/invoices/putDetailInvoice/{{ idInvoice }}/{{ idProduct }}', {
+                  method: 'PUT',
+                  headers: {
+                        'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(data)
+            })
+                  .then(response => response.json())
+                  .then(data => {
+                        const msg = data.msg;
+                        alert(msg);
+                        window.location.href = '/invoice/{{idInvoice}}'
+                  })
+                  .catch(error => console.error(error));
+      })
+
+</script>
+{% endblock %}

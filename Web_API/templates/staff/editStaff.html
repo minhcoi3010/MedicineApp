@@ -1,0 +1,165 @@
+﻿{% extends "layout.html" %}
+
+{% block title %} Infomation Staff {% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <!-- Bread crumb and right sidebar toggle -->
+    <div class="page-breadcrumb bg-white">
+        <div class="row align-items-center">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                <h3 class="page-title">Thông tin nhân viên</h3>
+            </div>
+            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                <div class="d-md-flex">
+                    <ol class="breadcrumb ms-auto">
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+
+    <div class="container-fluid">
+        <!-- Start Page Content -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="white-box">
+                    <h4 class="box-title">Nhân viên</h4>
+                    <div class="table-responsive">
+                        <form action="/staffs/update/{{id}}" method="post" enctype="multipart/form-data">
+                            <!-- Mã nhân viên -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <div class=" form-control-feedback left mb-2"
+                                        style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                        <span style="margin-right: 5px; margin-bottom : 4px"
+                                            class="fas fa-seedling form-control-feedback left"
+                                            aria-hidden="true"></span>
+                                        <h5 style="margin: 0;font-weight: bold; color: #333;">Mã nhân viên</h5>
+                                    </div>
+                                    <input type="text" class="form-control has-feedback-left" value="{{nhanvien.MaNV}}"
+                                        readonly>
+                                </div>
+                            </div>
+
+                            <!-- Tên Nhân viên -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <div class=" form-control-feedback left mb-2"
+                                        style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                        <span style="margin-right: 5px;margin-bottom : 4px"
+                                            class="fas fa-info-circle form-control-feedback left"
+                                            aria-hidden="true"></span>
+                                        <h5 style="margin: 0;font-weight: bold; color: #333;">Tên nhân viên</h5>
+                                    </div>
+                                    <input name="TenNV" type="text" class="form-control has-feedback-left"
+                                        value="{{nhanvien.TenNV}}">
+                                </div>
+                            </div>
+
+                            <!-- Giới tính -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <div class=" form-control-feedback left mb-2"
+                                        style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                        <span style="margin-right: 5px; margin-bottom : 4px"
+                                            class="fas fa-clipboard-list form-control-feedback left"
+                                            aria-hidden="true"></span>
+                                        <h5 style="margin: 0;font-weight: bold; color: #333;">Giới tính</h5>
+                                    </div>
+                                    <!-- Tạo 2 radio button chọn Nam hay Nữ -->
+                                    <div class="radio-buttons">
+                                        <label class="radio-inline" style="margin-right: 20px;">
+                                            <input type="radio" name="GioiTinh" value="Nam" {% if nhanvien.GioiTinh == 'Nam' %} checked {% endif %}> Nam
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="GioiTinh" value="Nữ" {% if nhanvien.GioiTinh == 'Nữ' %} checked {% endif %}> Nữ
+                                        </label>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                            <!-- Ngày sinh -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <div class=" form-control-feedback left mb-2"
+                                        style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                        <span style="margin-right: 5px; margin-bottom : 4px"
+                                            class="fas fa-clipboard-list form-control-feedback left"
+                                            aria-hidden="true"></span>
+                                        <h5 style="margin: 0;font-weight: bold; color: #333;">Ngày sinh</h5>
+                                    </div>
+                                    <input name="NgaySinh" type="datetime-local" class="form-control has-feedback-left" value="{{nhanvien.NgaySinh}}">
+
+                                </div>
+                            </div>
+
+                            <!-- Địa chỉ -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <div class=" form-control-feedback left mb-2"
+                                        style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                        <span style="margin-right: 5px;margin-bottom : 4px"
+                                            class="fas fa-info-circle form-control-feedback left"
+                                            aria-hidden="true"></span>
+                                        <h5 style="margin: 0;font-weight: bold; color: #333;">Địa chỉ</h5>
+                                    </div>
+                                    <input type="text" name="DiaChi" class="form-control has-feedback-left" value="{{nhanvien.DiaChi}}">
+                                </div>
+                            </div>
+
+                            <!-- Số điện thoại -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <div class=" form-control-feedback left mb-2"
+                                        style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                        <span style="margin-right: 5px;margin-bottom : 4px"
+                                            class="fas fa-info-circle form-control-feedback left"
+                                            aria-hidden="true"></span>
+                                        <h5 style="margin: 0;font-weight: bold; color: #333;">Số điện thoại</h5>
+                                    </div>
+                                    <input type="text" name="SDT" class="form-control has-feedback-left" value="{{nhanvien.SDT}}">
+                                </div>
+                            </div>
+
+                            <!-- Chức vụ -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <div class=" form-control-feedback left mb-2"
+                                        style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                        <span style="margin-right: 5px;margin-bottom : 4px"
+                                            class="fas fa-calendar-alt form-control-feedback left"
+                                            aria-hidden="true"></span>
+                                        <h5 style="margin: 0;font-weight: bold; color: #333;">Chức vụ</h5>
+                                    </div>
+                                    <input type="text" name="ChucVu" class="form-control has-feedback-left" value="{{nhanvien.ChucVu}}" readonly>
+                                    <!-- <select name="ChucVu" class="form-control">
+                                        {% for chuc_vu in list_chuc_vu %}
+                                            {% if chuc_vu == nhanvien.ChucVu %}
+                                                <option value="{{ chuc_vu }}" selected>{{ chuc_vu }}</option>
+                                            {% else %}
+                                                <option value="{{ chuc_vu }}">{{ chuc_vu }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select> -->
+                                </div>
+                            </div>
+
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <a href="/staffs" class="btn btn-primary" type="button">Cancel</a>
+                                    <button type="submit" value="submit" class="btn btn-success">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Page Content -->
+    </div>
+</div>
+{% endblock %}

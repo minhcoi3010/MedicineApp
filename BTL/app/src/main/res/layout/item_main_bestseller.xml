@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:id="@+id/ll_main_bestseller"
+    android:background="@drawable/item_border"
+    android:layout_marginBottom="10dp"
+    android:layout_height="100dp">
+
+    <ImageView
+        android:id="@+id/img_thuoc_main_bestseller"
+        android:background="@drawable/item_border_gray"
+        android:layout_width="80dp"
+        android:layout_margin="10dp"
+        android:layout_height="80dp"
+        android:src="@drawable/products1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_ten_thuoc_main_bestseller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thuốc Imidu 60mg có thành phần chính là Isosorbid-5-mononitrat. Hoạt chất này có tác dụng làm giãn hệ động mạch, bao gồm cả mạch vành. Từ đó, giúp làm giảm tiêu thụ oxy của cơ tim, cắt cơn đau thắt ngực. Ngoài ra, Isosorbid-5-mononitrat còn làm giảm áp lực thất phải và tuần hoàn phổi trong suy tim.."
+            android:textSize="17dp"
+            android:lines="1"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:layout_marginTop="10dp"
+            android:textColor="#D8000000"/>
+        <TextView
+            android:id="@+id/tv_mo_ta_main_bestseller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thuốc Imidu 60mg có thành phần chính là Isosorbid-5-mononitrat. Hoạt chất này có tác dụng làm giãn hệ động mạch, bao gồm cả mạch vành. Từ đó, giúp làm giảm tiêu thụ oxy của cơ tim, cắt cơn đau thắt ngực. Ngoài ra, Isosorbid-5-mononitrat còn làm giảm áp lực thất phải và tuần hoàn phổi trong suy tim.."
+            android:textSize="17dp"
+            android:lines="1"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:layout_marginTop="5dp"
+            android:textColor="#D8000000"/>
+
+        <TextView
+            android:id="@+id/tv_dongiaban_main_bestseller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="300000đ / hộp"
+            android:textStyle="bold"
+            android:textSize="17dp"
+            android:textColor="@color/lavender"/>
+    </LinearLayout>
+
+</LinearLayout>

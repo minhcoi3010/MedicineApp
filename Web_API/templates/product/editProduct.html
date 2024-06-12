@@ -1,0 +1,219 @@
+﻿{% extends "layout.html" %}
+
+{% block title %} Edit Product {% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <!-- Bread crumb and right sidebar toggle -->
+    <div class="page-breadcrumb bg-white">
+        <div class="row align-items-center">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                <h3 class="page-title">Sửa Sản Phẩm</h3>
+            </div>
+            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                <div class="d-md-flex">
+                    <ol class="breadcrumb ms-auto">
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+
+    <div class="container-fluid">
+        <!-- Start Page Content -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="white-box">
+                    <h4 class="box-title">Sản Phẩm</h4>
+                    <div class="table-responsive">
+                        <form action="/products/update/{{id}}" method="post" enctype="multipart/form-data">
+                            <!-- Mã Thuốc -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <div class=" form-control-feedback left mb-2" style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                        <span style="margin-right: 5px; margin-bottom : 4px" class="fas fa-seedling form-control-feedback left" aria-hidden="true"></span>
+                                        <h5 style="margin: 0;font-weight: bold; color: #333;">Mã Thuốc</h5>
+                                    </div>
+                                    <input type="text" class="form-control has-feedback-left" value="{{thuoc.MaThuoc}}" readonly>
+                                </div>
+                            </div>
+
+                            <!-- Tên Thuốc -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <div class=" form-control-feedback left mb-2" style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                        <span style="margin-right: 5px;margin-bottom : 4px" class="fas fa-info-circle form-control-feedback left" aria-hidden="true"></span>
+                                        <h5 style="margin: 0;font-weight: bold; color: #333;">Tên Thuốc</h5>
+                                    </div>
+                                    <input name="TenThuoc" type="text" class="form-control has-feedback-left" value="{{thuoc.TenThuoc}}">
+                                </div>
+                            </div>
+
+                            <!-- Thành phần -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <div class=" form-control-feedback left mb-2" style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                        <span style="margin-right: 5px; margin-bottom : 4px" class="fas fa-clipboard-list form-control-feedback left" aria-hidden="true"></span>
+                                        <h5 style="margin: 0;font-weight: bold; color: #333;">Thành Phần</h5>
+                                    </div>
+                                    <input name="ThanhPhan" type="text" class="form-control has-feedback-left" value="{{thuoc.ThanhPhan}}">
+                                </div>
+                            </div>
+
+                            <!-- Ngày SX -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <div class=" form-control-feedback left mb-2" style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                        <span style="margin-right: 5px; margin-bottom : 4px" class="fas fa-clipboard-list form-control-feedback left" aria-hidden="true"></span>
+                                        <h5 style="margin: 0;font-weight: bold; color: #333;">Ngày Sản Xuất</h5>
+                                    </div>
+                                    <input name="NgaySX" type="datetime-local" class="form-control has-feedback-left" value="{{thuoc.NgaySX}}">
+                                </div>
+                            </div>
+
+                            <!-- Ngày HH -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <div class=" form-control-feedback left mb-2" style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                        <span style="margin-right: 5px; margin-bottom : 4px" class="fas fa-clipboard-list form-control-feedback left" aria-hidden="true"></span>
+                                        <h5 style="margin: 0;font-weight: bold; color: #333;">Ngày Hết Hạn</h5>
+                                    </div>
+                                    <input name="NgayHH" type="datetime-local" class="form-control has-feedback-left" value="{{thuoc.NgayHH}}">
+                                </div>
+                            </div>
+
+                            <!-- Mã Loại -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <div class=" form-control-feedback left mb-2" style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                        <span style="margin-right: 5px;margin-bottom : 4px" class="fas fa-calendar-alt form-control-feedback left" aria-hidden="true"></span>
+                                        <h5 style="margin: 0;font-weight: bold; color: #333;">Mã Loại</h5>
+                                    </div>
+                                    <select name="MaLoai" class="form-control">
+                                        {% for ma_loai in ma_loai_thuoc_list %}
+                                            {% if ma_loai == thuoc.MaLoai %}
+                                                <option value="{{ ma_loai }}" selected>{{ ma_loai }}</option>
+                                            {% else %}
+                                                <option value="{{ ma_loai }}">{{ ma_loai }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Giá bán -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <div class=" form-control-feedback left mb-2" style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                        <span style="margin-right: 5px;margin-bottom : 4px" class="fas fa-pound-sign  form-control-feedback left" aria-hidden="true"></span>
+                                        <h5 style="margin: 0;font-weight: bold; color: #333;">Giá Bán</h5>
+
+                                    </div>
+                                    <input name="DonGiaBan" type="text" class="form-control has-feedback-left" value="{{thuoc.DonGiaBan}}">
+                                </div>
+                            </div>
+
+                            <!-- Giá nhập -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <div class=" form-control-feedback left mb-2" style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                        <span style="margin-right: 5px;margin-bottom : 4px" class="fas fa-pound-sign form-control-feedback left" aria-hidden="true"></span>
+                                        <h5 style="margin: 0;font-weight: bold; color: #333;">Giá Nhập</h5>
+                                    </div>
+                                    <input name="DonGiaNhap" type="text" class="form-control has-feedback-left" value="{{thuoc.DonGiaNhap}}">
+                                </div>
+                            </div>
+
+                            <!-- Số lượng -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <div class=" form-control-feedback left mb-2" style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                        <span style="margin-right: 5px;margin-bottom : 4px" class="fas fa-cubes form-control-feedback left" aria-hidden="true"></span>
+                                        <h5 style="margin: 0;font-weight: bold; color: #333;">Số Lượng</h5>
+                                    </div>
+                                    <input name="SoLuong" type="text" class="form-control has-feedback-left" value="{{thuoc.SoLuong}}">
+                                </div>
+                            </div>
+
+                            <!-- Trọng Lượng -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <div class=" form-control-feedback left mb-2" style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                        <span style="margin-right: 5px;margin-bottom : 4px" class="fas fa-x-ray form-control-feedback left" aria-hidden="true"></span>
+                                        <h5 style="margin: 0;font-weight: bold; color: #333;">Trọng Lượng</h5>
+                                    </div>
+                                    <input name="TrongLuong" type="text" class="form-control has-feedback-left" value="{{thuoc.TrongLuong}}">
+                                </div>
+                            </div>
+
+                            <!-- Xuất xứ -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                      <div class=" form-control-feedback left mb-2"
+                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                            <span style="margin-right: 5px;margin-bottom : 4px"
+                                                  class="fas fa-x-ray form-control-feedback left"
+                                                  aria-hidden="true"></span>
+                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Xuất xứ</h5>
+                                      </div>
+                                      <input name="XuatXu" type="text" class="form-control has-feedback-left" value="{{thuoc.XuatXu}}">
+                                </div>
+                          </div>
+
+                          <!-- Mô tả -->
+                          <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                      <div class=" form-control-feedback left mb-2"
+                                            style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                            <span style="margin-right: 5px;margin-bottom : 4px"
+                                                  class="fas fa-x-ray form-control-feedback left"
+                                                  aria-hidden="true"></span>
+                                            <h5 style="margin: 0;font-weight: bold; color: #333;">Mô tả</h5>
+                                      </div>
+                                      <textarea name="MoTa" cols="30" rows="4" class="form-control has-feedback-left">{{thuoc.MoTa}}</textarea>
+                                </div>
+                          </div>
+
+                            <!-- Ảnh -->
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <div class=" form-control-feedback left mb-2" style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+                                        <span style="margin-right: 5px;margin-bottom : 4px" class="fas fa-file-image form-control-feedback left" aria-hidden="true"></span>
+                                        <h5 style="margin: 0;font-weight: bold; color: #333;">Ảnh</h5>
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" name="Anh" id="file-name" class="form-control" value="{{thuoc.Anh}}" readonly>
+                                        <div class="input-group-append">
+                                            <label class="btn btn-secondary" for="file-input">Chọn ảnh</label>
+                                        </div>
+                                    </div>
+                                    <input id="file-input" type="file" style="display:none;" onchange="updateFileName()">
+                                </div>
+                            </div>
+
+                            <div class="item form-group">
+                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                    <a href="/products" class="btn btn-primary" type="button">Cancel</a>
+                                    <button type="submit" value="submit" class="btn btn-success">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Page Content -->
+    </div>
+</div>
+
+<script>
+    // Cập nhật tên file khi chọn file
+    function updateFileName() {
+        var input = document.getElementById('file-input');
+        var fileName = input.files[0].name;
+        document.getElementById('file-name').value = fileName;
+    }
+</script>
+{% endblock %}

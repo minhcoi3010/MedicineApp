@@ -1,0 +1,164 @@
+{% extends "layout.html" %} 
+
+{% block title %} Delete invoice {% endblock %} 
+
+{% block content %}
+<div class="page-wrapper">
+      <!-- Bread crumb and right sidebar toggle -->
+      <div class="page-breadcrumb bg-white">
+            <div class="row align-items-center">
+                  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <h3 class="page-title">Xóa Hóa Đơn Nhập</h3>
+                  </div>
+            </div>
+      </div>
+
+      <div class="container-fluid">
+            <!-- Start Page Content -->
+            <div class="row">
+                  <div class="col-sm-12">
+                        <div class="white-box">
+                              <h3 class="box-title">Bạn có muốn xóa hóa đơn {{id}} không?</h3>
+                              <div class="table-responsive" style="margin-top: 25px;">
+                                    <form method="put" enctype="multipart/form-data" id="formUpdateInvoice">
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class="form-control-feedback left mb-2" 
+                                                            style="display: grid; grid-template-columns: auto 1fr;align-items: center;">
+                                                            <span style="margin-right: 5px; margin-bottom: 4px"
+                                                                  class="fas fa-seedling form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0; font-weight: bold; color: #333">
+                                                                  Số hóa đơn
+                                                            </h5>
+                                                      </div>
+                                                      <input type="text" id="SoHDN"
+                                                            class="form-control has-feedback-left"
+                                                            readonly />
+                                                </div>
+                                          </div>
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class="form-control-feedback left mb-2" 
+                                                            style="display: grid;grid-template-columns: auto 1fr;align-items: center;">
+                                                            <span style="margin-right: 5px; margin-bottom: 4px"
+                                                                  class="fas fa-info-circle form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0; font-weight: bold; color: #333">
+                                                                  Mã nhân viên
+                                                            </h5>
+                                                      </div>
+                                                      <input type="text" id="MaNV"
+                                                            class="form-control has-feedback-left"
+                                                            readonly />
+                                                </div>
+                                          </div>
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class="form-control-feedback left mb-2" 
+                                                            style="display: grid;grid-template-columns: auto 1fr;align-items: center;">
+                                                            <span style="margin-right: 5px; margin-bottom: 4px"
+                                                                  class="fas fa-clipboard-list form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0; font-weight: bold; color: #333">
+                                                                  Ngày lập
+                                                            </h5>
+                                                      </div>
+                                                      <input type="text" id="NgayLap"
+                                                            class="form-control has-feedback-left"
+                                                            readonly />
+                                                </div>
+                                          </div>
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class="form-control-feedback left mb-2" 
+                                                            style="display: grid;grid-template-columns: auto 1fr;align-items: center;">
+                                                            <span style="margin-right: 5px; margin-bottom: 4px"
+                                                                  class="fas fa-clipboard-list form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0; font-weight: bold; color: #333">
+                                                                  Mã nhà cung cấp
+                                                            </h5>
+                                                      </div>
+                                                      <input class="form-control has-feedback-left" id="MaNCC" readonly />
+                                                </div>
+                                          </div>
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <div class="form-control-feedback left mb-2" 
+                                                            style="display: grid;grid-template-columns: auto 1fr;align-items: center;">
+                                                            <span style="margin-right: 5px; margin-bottom: 4px"
+                                                                  class="fas fa-clipboard-list form-control-feedback left"
+                                                                  aria-hidden="true"></span>
+                                                            <h5 style="margin: 0; font-weight: bold; color: #333">
+                                                                  Tổng tiền
+                                                            </h5>
+                                                      </div>
+                                                      <input class="form-control has-feedback-left" id="TongTien" readonly />
+                                                </div>
+                                          </div>
+                                          <div class="item form-group">
+                                                <div class="col-md-8 col-sm-8 offset-md-2">
+                                                      <a class="btn btn-primary" href="/invoices"
+                                                            type="button">Cancel</a>
+                                                      <button type="submit" class="btn btn-danger">
+                                                            Delete
+                                                      </button>
+                                                </div>
+                                          </div>
+                              </div>
+                              <!-- End Page Content -->
+                        </div>
+                        </form>
+                  </div>
+            </div>
+      </div>
+</div>
+<!-- End Page Content -->
+</div>
+</div>
+<script>
+      var formUpdateInvoice = document.getElementById("formUpdateInvoice");
+      var SoHDN_Input = document.getElementById("SoHDN");
+      var MaNV_Input = document.getElementById("MaNV");
+      var NgayLap_Input = document.getElementById("NgayLap");
+      var MaNCC_Input = document.getElementById("MaNCC");
+      var TongTien_Input = document.getElementById("TongTien");
+
+      var invoiceID = "{{ id }}";
+      var url = "/invoices/getByID/" + invoiceID;
+      fetch('/invoices/getById/' + invoiceID)
+            .then((response) => response.json())
+            .then((data) => {
+                  SoHDN_Input.value = data.SoHDN;
+                  MaNV_Input.value = data.MaNV;
+                  NgayLap_Input.value = data.NgayLap;
+                  MaNCC_Input.value = data.MaNCC;
+                  TongTien_Input.value = data.TongTien;
+            })
+            .catch(error => console.error(error));
+
+      formUpdateInvoice.addEventListener("submit", (e) => {
+            e.preventDefault();
+            var url = "/invoices/deleteInvoice/" + invoiceID;
+
+            var data = {
+                  MaNV: MaNV_Input.value,
+                  NgayLap: NgayLap_Input.value,
+                  MaNCC: MaNCC_Input.value,
+                  TongTien: TongTien_Input.value,
+            };
+
+            fetch(url, {
+                  method: "DELETE",
+            })
+                  .then((response) => response.json())
+                  .then((data) => {
+                        const msg = data.msg;
+                        alert(msg);
+                        window.location.href = "/invoices";
+                  })
+                  .catch((error) => console.error(error));
+      });
+</script>
+{% endblock %}
